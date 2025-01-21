@@ -7,33 +7,66 @@ namespace CalculatorApp
             InitializeComponent();
         }
 
-        int value1 = 1;
-        int value2 = 2;
+        double value;
+        string operation;
+        bool operation_pressed;
 
-        private void btn_1_Click(object sender, EventArgs e)
+        private void PnumberEvent(object sender, EventArgs e)
         {
-            label1.Text = label1.Text + "1";
+            if ((operation == "+") || (operation == "-") || (operation == "*") || (operation == "/"))
+            {
+                if (operation_pressed)
+                {
+                    operation_pressed = false;
+                    txt_result.Text = "0";
+                }
+            }
+            Button b = sender as Button;
+            if (txt_result.Text == "0")
+                txt_result.Text = b.Text;
+            else
+                txt_result.Text += b.Text;
         }
 
-        private void btn_remove_Click(object sender, EventArgs e)
+        private void PoperationEvent(object sender, EventArgs e)
         {
-            string currentText = label1.Text;
+            Button b = sender as Button;
+            operation = b.Text;
+            value = double.Parse(txt_result.Text);
+            operation_pressed = true;
+        }
 
-            if (!string.IsNullOrEmpty(currentText))
+        private void button12_Click(object sender, EventArgs e)
+        {
+            try
             {
-                label1.Text = currentText.Substring(0, currentText.Length - 1);
+                switch (operation)
+                {
+                    case "+":
+                        txt_result.Text = (value + double.Parse(txt_result.Text)).ToString();
+                        break;
+                    case "-":
+                        txt_result.Text = (value - double.Parse(txt_result.Text)).ToString();
+                        break;
+                    case "*":
+                        txt_result.Text = (value * double.Parse(txt_result.Text)).ToString();
+                        break;
+                    case "/":
+                        txt_result.Text = (value / double.Parse(txt_result.Text)).ToString();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
-        private void btn_more_Click(object sender, EventArgs e)
+        private void button14_Click(object sender, EventArgs e)
         {
-            label1.Text = label1.Text + "+";
-        }
-
-        private void btn_result_Click(object sender, EventArgs e)
-        {
-            
-
+            txt_result.Text = "0";
         }
     }
 }
